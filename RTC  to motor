@@ -35,3 +35,16 @@ void feedFish() {
     digitalWrite(RELAY_PIN, LOW); // Turn off relay
     Serial.println("Motor stopped.");
 }
+
+//Connections
+//DS1302 RTC Module to ESP32
+//VCC	3.3V
+//GND	GND
+//CLK	GPIO 15
+//DAT	GPIO 2
+//RST	GPIO 4
+
+//Relay Module to ESP32
+//VCC	5V
+//GND	GND
+//IN	GPIO 5
