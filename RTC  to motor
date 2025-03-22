@@ -1,0 +1,37 @@
+#include <DS1302.h>
+
+#define RELAY_PIN  5  // Change to the actual relay pin
+
+DS1302 rtc(15, 2, 4); // DS1302 CLK, DAT, RST pins
+
+void setup() {
+    Serial.begin(115200);
+    rtc.halt(false);
+    rtc.writeProtect(false);
+    pinMode(RELAY_PIN, OUTPUT);
+    digitalWrite(RELAY_PIN, LOW); // Ensure relay is off initially
+}
+
+void loop() {
+    Time t = rtc.getTime();
+    int currentHour = t.hour;
+    int currentMinute = t.min;
+
+    // Feeding times: 12:00, 17:00, 20:00, 3:00
+    if ((currentHour == 12 && currentMinute == 0) ||
+        (currentHour == 17 && currentMinute == 0) ||
+        (currentHour == 20 && currentMinute == 0) ||
+        (currentHour == 3 && currentMinute == 0)) {
+        feedFish();
+    }
+
+    delay(60000); // Check time every minute
+}
+
+void feedFish() {
+    Serial.println("Feeding time! Motor running...");
+    digitalWrite(RELAY_PIN, HIGH); // Turn on relay (motor runs)
+    delay(10000); // Run for 10 seconds
+    digitalWrite(RELAY_PIN, LOW); // Turn off relay
+    Serial.println("Motor stopped.");
+}
